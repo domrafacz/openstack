@@ -33,6 +33,9 @@ class Container extends OperatorResource implements Creatable, Deletable, Retrie
     /** @var string */
     public $name;
 
+    /** @var string */
+    public $read;
+
     /** @var array */
     public $metadata;
 
@@ -47,6 +50,7 @@ class Container extends OperatorResource implements Creatable, Deletable, Retrie
 
         $this->objectCount = $response->getHeaderLine('X-Container-Object-Count');
         $this->bytesUsed   = $response->getHeaderLine('X-Container-Bytes-Used');
+        $this->read        = $response->getHeaderLine('X-Container-Read');
         $this->metadata    = $this->parseMetadata($response);
 
         return $this;
