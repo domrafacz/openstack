@@ -10,16 +10,18 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase implements TestInter
     protected $logger;
     private $startPoint;
     private $lastPoint;
-    private $sampleManager;
+    protected $sampleManager;
     private $namePrefix = 'phptest_';
 
     public function __construct(LoggerInterface $logger, SampleManagerInterface $sampleManager)
     {
+        parent::__construct();
+
         $this->logger = $logger;
         $this->sampleManager = $sampleManager;
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         $this->sampleManager->deletePaths();
     }
@@ -110,7 +112,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase implements TestInter
         $this->logger->info('Finished all tests! Time taken: {output}.', ['{output}' => $output]);
     }
 
-    protected function sampleFile(array $replacements, $path)
+    protected function sampleFile($path, array $replacements = [])
     {
         return $this->sampleManager->write($path, $replacements);
     }

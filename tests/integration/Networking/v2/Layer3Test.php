@@ -2,7 +2,6 @@
 
 namespace OpenStack\Integration\Networking\v2;
 
-use Guzzle\Tests\Service\Mock\Command\Sub\Sub;
 use OpenStack\Integration\TestCase;
 use OpenStack\Networking\v2\Extensions\Layer3\Models\FloatingIp;
 use OpenStack\Networking\v2\Models\Network;
@@ -28,7 +27,7 @@ class Layer3Test extends TestCase
         $this->outputTimeTaken();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
 
@@ -116,31 +115,26 @@ class Layer3Test extends TestCase
 
         $this->logStep('Create floating IP');
         /** @var FloatingIp $ip */
-        $path = $this->sampleFile($replacements, 'floatingIPs/create.php');
-        require_once $path;
+        require_once $this->sampleFile('floatingIPs/create.php', $replacements);
         self::assertInstanceOf(FloatingIp::class, $ip);
         self::assertEquals($externalNetwork->id, $ip->floatingNetworkId);
         self::assertEquals($port1->id, $ip->portId);
 
         $this->logStep('List floating IPs');
-        $path = $this->sampleFile($replacements, 'floatingIPs/list.php');
-        require_once $path;
+        require_once $this->sampleFile('floatingIPs/list.php', $replacements);
 
         $this->logStep('Get floating IP');
         $replacements['{id}'] = $ip->id;
-        $path = $this->sampleFile($replacements, 'floatingIPs/get.php');
-        require_once $path;
+        require_once $this->sampleFile('floatingIPs/get.php', $replacements);
         self::assertInstanceOf(FloatingIp::class, $ip);
 
         $this->logStep('Update floating IP');
         $port2 = $this->createPort($internalNetwork);
         $replacements['{newPortId}'] = $port2->id;
-        $path = $this->sampleFile($replacements, 'floatingIPs/update.php');
-        require_once $path;
+        require_once $this->sampleFile('floatingIPs/update.php', $replacements);
 
         $this->logStep('Delete floating IP');
-        $path = $this->sampleFile($replacements, 'floatingIPs/delete.php');
-        require_once $path;
+        require_once $this->sampleFile('floatingIPs/delete.php', $replacements);
 
         $router->removeInterface(['subnetId' => $subnet->id]);
         $router->delete();
