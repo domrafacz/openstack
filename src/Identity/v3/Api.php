@@ -16,9 +16,10 @@ class Api extends AbstractApi
     public function postTokens(): array
     {
         return [
-            'method' => 'POST',
-            'path'   => 'auth/tokens',
-            'params' => [
+            'method'   => 'POST',
+            'path'     => 'auth/tokens',
+            'skipAuth' => true,
+            'params'   => [
                 'methods'                => $this->params->methods(),
                 'user'                   => $this->params->user(),
                 'application_credential' => $this->params->applicationCredential(),
@@ -555,6 +556,7 @@ class Api extends AbstractApi
                 'description'      => $this->params->desc('user'),
                 'email'            => $this->params->email(),
                 'enabled'          => $this->params->enabled('user'),
+                'name'             => $this->params->name('user'),
                 'password'         => $this->params->password(),
             ],
         ];

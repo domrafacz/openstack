@@ -185,7 +185,7 @@ class Server extends OperatorResource implements Creatable, Updateable, Deletabl
      */
     public function reboot(string $type = Enum::REBOOT_SOFT)
     {
-        if (!in_array($type, ['SOFT', 'HARD'])) {
+        if (!in_array($type, [Enum::REBOOT_SOFT, Enum::REBOOT_HARD])) {
             throw new \RuntimeException('Reboot type must either be SOFT or HARD');
         }
 
@@ -214,6 +214,28 @@ class Server extends OperatorResource implements Creatable, Updateable, Deletabl
         $this->execute($this->api->stopServer(), [
             'id'      => $this->id,
             'os-stop' => null,
+        ]);
+    }
+
+    /**
+     * Resumes server.
+     */
+    public function resume(): void
+    {
+        $this->execute($this->api->resumeServer(), [
+            'id'     => $this->id,
+            'resume' => null,
+        ]);
+    }
+
+    /**
+     * Suspends server.
+     */
+    public function suspend(): void
+    {
+        $this->execute($this->api->suspendServer(), [
+            'id'      => $this->id,
+            'suspend' => null,
         ]);
     }
 
@@ -458,8 +480,6 @@ class Server extends OperatorResource implements Creatable, Updateable, Deletabl
      * existing keys will remain unaffected.
      *
      * @param array $metadata {@see \OpenStack\Compute\v2\Api::postServerMetadata}
-     *
-     * @return array
      */
     public function mergeMetadata(array $metadata)
     {

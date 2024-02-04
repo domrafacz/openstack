@@ -5,8 +5,10 @@ require 'vendor/autoload.php';
 $openstack = new OpenStack\OpenStack([
     'authUrl' => '{authUrl}',
     'region'  => '{region}',
-    'user'    => ['id' => '{userId}', 'password' => '{password}'],
-    'scope'   => ['project' => ['id' => '{projectId}']]
+    'user'    => [
+        'id'       => '{userId}',
+        'password' => '{password}']
+    ,
 ]);
 
 $service = $openstack->blockStorageV3();
@@ -14,5 +16,5 @@ $service = $openstack->blockStorageV3();
 $volumeTypes = $service->listVolumeTypes();
 
 foreach ($volumeTypes as $volumeType) {
-    /** @var $volumeType \OpenStack\BlockStorage\v2\VolumeType */
+    /** @var \OpenStack\BlockStorage\v2\Models\VolumeType $volumeType */
 }
